@@ -68,9 +68,14 @@ task runClient(type: JavaExec) {
     main = 'com.jeeconf.grpcdemo.WeatherClient'
 }
 
-task asyncServer(type: JavaExec) {
+task runAsyncServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'com.jeeconf.grpcdemo.dependencies.WeatherAsyncServer'
+}
+
+task runAsyncClient(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.jeeconf.grpcdemo.WeatherAsyncClient'
 }
 
 task streamingServer(type: JavaExec) {
@@ -81,4 +86,9 @@ task streamingServer(type: JavaExec) {
 task streamingClient(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'com.jeeconf.grpcdemo.streaming.WeatherStreamingClient'
+}
+
+task clientRunner(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.jeeconf.grpcdemo.ClientRunner'
 }

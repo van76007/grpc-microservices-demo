@@ -12,7 +12,6 @@ import java.util.function.Supplier;
  * Replies with randomly generated {@link Wind}.
  */
 public class WindService extends WindServiceImplBase {
-
     private final Supplier<Wind> windProvider = new RandomWindProvider();
 
     @Override
