@@ -18,7 +18,7 @@ import java.time.LocalTime;
 public class KvClient {
   private final ManagedChannel channel;
   private AtomicLong rpcCount = new AtomicLong();
-  private final Semaphore limiter = new Semaphore(1);
+  private final Semaphore limiter = new Semaphore(500);
 
   public KvClient(ManagedChannel channel) {
     this.channel = channel;
