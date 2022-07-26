@@ -85,4 +85,4 @@ Each HTTP2 packet has 10 streams.
 7. Set parallelism higher than number of CPU = 8:
    clientRunner(semaphore=200) + WeatherServer(workstealing pool = 100)
    Did 9651.891666666666 RPCs/s
-   Wireshark I/O: 2000 packet/s
+   Wireshark I/O: 3200 packet/s
