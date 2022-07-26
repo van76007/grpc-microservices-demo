@@ -45,7 +45,7 @@ public class WeatherServer {
             i_threads = Integer.parseInt(threads);
         }
         String value = System.getenv().getOrDefault("JVM_EXECUTOR_TYPE", "workStealing");
-        System.out.println("Number of threads " + i_threads + "executor tyle=" + value);
+        System.out.println("Number of threads " + i_threads + " and executor style=" + value);
 
         if (Objects.equals(value, "direct")) {
             sb = sb.directExecutor();

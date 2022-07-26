@@ -36,7 +36,7 @@ class MyThread implements Runnable
         }
 
         ManagedChannel channel = ManagedChannelBuilder.forTarget("dns:///localhost:8090").usePlaintext(true).build();
-        
+
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         long DURATION_SECONDS = 120;
         try {
