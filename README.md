@@ -47,6 +47,42 @@ using semaphore [Ref](https://grpc.io/blog/optimizing-grpc-part-1/)
 ```
 ./gradlew runAsyncServer 
 
+Start 1 client
 ./gradlew clientRunner
 
+ OR start 2 cliens concurrently
+./gradlew multiClientsRunner
+
 ```
+
+### Result
+
+1. clientRunner(semaphore=200) + WeatherServer(default executors, no limit):
+   Did 12722.758333333333 RPCs/s. Did 8650.075 RPCs/s
+   Wireshark I/O: 1250 packet/s
+   Peak 215 threads on server
+Note that if stub is global variable in KvClient: Did 7482.383333333333 RPCs/s
+Each HTTP2 packet has 10 streams.
+
+2. clientRunner(semaphore=200) + WeatherAsyncServer(default executors, no limit) block on WindProvider
+   Did 3466.7833333333333 RPCs/s
+   Wireshark I/O: 1250 packet/s
+   Peak 215 threads
+
+3. clientRunner(semaphore=200) + WeatherAsyncServer(default executors, no limit) block on WeatherAsyncservice
+   Did 4873.791666666667 RPCs/s
+4. multiClientsRunner(semaphore=100) + WeatherServer:
+   1 client Did 3595.3333333333335 RPCs/s. Other Did 3582.4333333333334 RPCs/s
+   Wireshark I/O: 1500 packet/s 
+   Peak 220 threads on server 
+5. clientRunner(semaphore=200) + WeatherServer(fixed thread pool = 100):
+   Did 8795.791666666666 RPCs/s. Peak 115 threads on server. Wireshark I/O: 1500 packet/s
+   Did 1064.1166666666666 RPCs/s if server fixed thread pool = 10. Peak 25 threads. Wireshark I/O: 2000 packet/s
+   Tested on 8-core CPU machine so should not have set number of threads > 8
+6. clientRunner(semaphore=200) + WeatherServer(workstealing pool = 8)
+   Did 1387.7833333333333 RPCs/s
+   Wireshark I/O: 2000 packet/s
+7. Set parallelism higher than number of CPU = 8:
+   clientRunner(semaphore=200) + WeatherServer(workstealing pool = 100)
+   Did 9651.891666666666 RPCs/s
+   Wireshark I/O: 2000 packet/s

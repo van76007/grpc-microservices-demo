@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientRunner {
 
-  private static final long DURATION_SECONDS = 300;
+  private static final long DURATION_SECONDS = 120;
   private ManagedChannel channel;
 
   public static void main(String[] args) {
@@ -34,7 +34,7 @@ public class ClientRunner {
     ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     try {
       AtomicBoolean done = new AtomicBoolean();
-      KvClient client = new KvClient(channel);
+      KvClient client = new KvClient(channel, 200);
       System.out.println("Starting");
       scheduler.schedule(() -> done.set(true), DURATION_SECONDS, TimeUnit.SECONDS);
       client.doClientWork(done);

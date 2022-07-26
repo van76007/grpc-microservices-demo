@@ -92,3 +92,8 @@ task clientRunner(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'com.jeeconf.grpcdemo.ClientRunner'
 }
+
+task multiClientsRunner(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.jeeconf.grpcdemo.MultiClientRunner'
+}

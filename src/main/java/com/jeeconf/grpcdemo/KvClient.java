@@ -18,10 +18,15 @@ import java.time.LocalTime;
 public class KvClient {
   private final ManagedChannel channel;
   private AtomicLong rpcCount = new AtomicLong();
-  private final Semaphore limiter = new Semaphore(500);
+  // private final Semaphore limiter = new Semaphore(100);
+  private Semaphore limiter;
 
-  public KvClient(ManagedChannel channel) {
+  // WeatherServiceFutureStub stub;
+
+  public KvClient(ManagedChannel channel, int numberOfConcurrentGrpc) {
     this.channel = channel;
+    this.limiter = new Semaphore(numberOfConcurrentGrpc);
+    // stub = WeatherServiceGrpc.newFutureStub(channel);
   }
 
   public long getRpcCount() {
