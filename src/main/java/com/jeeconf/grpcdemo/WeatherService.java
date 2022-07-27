@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  * Returns hard-coded weather response.
  */
 public class WeatherService extends WeatherServiceImplBase {
-    private static final long DELAY_MILLIS = 5;
+    private static final long DELAY_MILLIS = 3;
 
     @Override
     public void getCurrent(WeatherRequest request, StreamObserver<WeatherResponse> responseObserver) {

@@ -41,7 +41,7 @@ public class KvClient {
 
       WeatherRequest request = WeatherRequest.newBuilder()
           .setCoordinates(Coordinates.newBuilder().setLatitude(KyivCoordinates.LATITUDE)
-              .setLongitude(KyivCoordinates.LONGITUDE)).build();
+              .setLongitude(System.nanoTime())).build();
       ListenableFuture<WeatherResponse> res = stub.getCurrent(request);
 
       res.addListener(() ->  {
@@ -51,8 +51,8 @@ public class KvClient {
       Futures.addCallback(res, new FutureCallback<WeatherResponse>() {
         @Override
         public void onSuccess(WeatherResponse response) {
-          // System.out.println("Async client. Current weather for %s: %s.%n", request, response);
-          System.out.println("Got response at " + LocalTime.now());
+          long delay = (System.nanoTime() - request.getCoordinates().getLongitude()) / 1000000;
+          System.out.println("Got response delay " + delay + " ms at " + LocalTime.now());
         }
 
         @Override

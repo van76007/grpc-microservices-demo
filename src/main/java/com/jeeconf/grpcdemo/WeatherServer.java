@@ -44,7 +44,11 @@ public class WeatherServer {
         if (threads != null && !threads.isEmpty()) {
             i_threads = Integer.parseInt(threads);
         }
-        String value = System.getenv().getOrDefault("JVM_EXECUTOR_TYPE", "workStealing");
+        
+        // In principle, number of threads should be equal to number of CPUs but let try 256
+        i_threads = i_threads * 32;
+        
+        String value = System.getenv().getOrDefault("JVM_EXECUTOR_TYPE", "fixed");
         System.out.println("Number of threads " + i_threads + " and executor style=" + value);
 
         if (Objects.equals(value, "direct")) {
@@ -54,7 +58,7 @@ public class WeatherServer {
         } else if (Objects.equals(value, "fixed")) {
             sb = sb.executor(Executors.newFixedThreadPool(i_threads));
         } else if (Objects.equals(value, "workStealing")) {
-            sb = sb.executor(Executors.newWorkStealingPool(100));
+            sb = sb.executor(Executors.newWorkStealingPool(i_threads));
         } else if (Objects.equals(value, "cached")) {
             sb = sb.executor(Executors.newCachedThreadPool());
         }

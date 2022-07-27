@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * Randomly generates {@link Wind}.
  */
 public class RandomWindProvider implements Supplier<Wind> {
-    private static final long DELAY_MILLIS = 5;
+    private static final long DELAY_MILLIS = 3;
     private final Random random = new Random();
 
     @Override

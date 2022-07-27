@@ -8,6 +8,8 @@ import io.grpc.netty.NettyChannelBuilder;
 import io.grpc.netty.NettyServerBuilder;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.Executors;
 
 /**
  * Starts weather, temperature, humidity and wind servers.
@@ -35,7 +37,7 @@ public class WeatherAsyncServer {
                 WindServiceGrpc.newFutureStub(NettyChannelBuilder.forAddress(host, windPort).usePlaintext(true).build());
 
         WeatherAsyncService weatherService = new WeatherAsyncService(temperatureStub, humidityStub, windStub);
-        Server weatherServer = NettyServerBuilder.forPort(8090).addService(weatherService).build().start();
+        Server weatherServer = configureExecutor().addService(weatherService).build().start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             weatherServer.shutdownNow();
@@ -45,5 +47,32 @@ public class WeatherAsyncServer {
         }));
 
         weatherServer.awaitTermination();
+    }
+
+    private static NettyServerBuilder configureExecutor() {
+        NettyServerBuilder sb = NettyServerBuilder.forPort(8090);
+
+        String threads = System.getenv("JVM_EXECUTOR_THREADS");
+        int i_threads = Runtime.getRuntime().availableProcessors();
+        if (threads != null && !threads.isEmpty()) {
+            i_threads = Integer.parseInt(threads);
+        }
+        // In principle, number of threads should be equal to number of CPUs but let try
+        i_threads = i_threads * 256;
+        String value = System.getenv().getOrDefault("JVM_EXECUTOR_TYPE", "fixed");
+        System.out.println("Number of threads " + i_threads + " and executor style=" + value);
+
+        if (Objects.equals(value, "direct")) {
+            sb = sb.directExecutor();
+        } else if (Objects.equals(value, "single")) {
+            sb = sb.executor(Executors.newSingleThreadExecutor());
+        } else if (Objects.equals(value, "fixed")) {
+            sb = sb.executor(Executors.newFixedThreadPool(i_threads));
+        } else if (Objects.equals(value, "workStealing")) {
+            sb = sb.executor(Executors.newWorkStealingPool(i_threads));
+        } else if (Objects.equals(value, "cached")) {
+            sb = sb.executor(Executors.newCachedThreadPool());
+        }
+        return sb;
     }
 }

@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientRunner {
 
-  private static final long DURATION_SECONDS = 120;
+  private static final long DURATION_SECONDS = 180;
   private ManagedChannel channel;
 
   public static void main(String[] args) {
