@@ -46,9 +46,9 @@ public class WeatherServer {
         }
         
         // In principle, number of threads should be equal to number of CPUs but let try 256
-        i_threads = i_threads * 32;
+        i_threads = i_threads * 16;
         
-        String value = System.getenv().getOrDefault("JVM_EXECUTOR_TYPE", "fixed");
+        String value = System.getenv().getOrDefault("JVM_EXECUTOR_TYPE", "workStealing");
         System.out.println("Number of threads " + i_threads + " and executor style=" + value);
 
         if (Objects.equals(value, "direct")) {

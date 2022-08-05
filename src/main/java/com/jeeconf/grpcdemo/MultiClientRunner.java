@@ -38,10 +38,10 @@ class MyThread implements Runnable
         ManagedChannel channel = ManagedChannelBuilder.forTarget("dns:///localhost:8090").usePlaintext(true).build();
 
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        long DURATION_SECONDS = 600;
+        long DURATION_SECONDS = 120;
         try {
             AtomicBoolean done = new AtomicBoolean();
-            KvClient client = new KvClient(channel, 200);
+            KvClient client = new KvClient(channel, 100);
             System.out.println("Starting");
             scheduler.schedule(() -> done.set(true), DURATION_SECONDS, TimeUnit.SECONDS);
             client.doClientWork(done);

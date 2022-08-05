@@ -1,4 +1,4 @@
-package com.jeeconf.grpcdemo.dependencies;
+package com.jeeconf.grpcdemo;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;

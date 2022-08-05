@@ -1,5 +1,6 @@
-package com.jeeconf.grpcdemo.dependencies;
+package com.jeeconf.grpcdemo;
 
+import com.jeeconf.grpcdemo.dependencies.*;
 import com.jeeconf.grpcdemo.dependencies.HumidityServiceGrpc.HumidityServiceFutureStub;
 import com.jeeconf.grpcdemo.dependencies.TemperatureServiceGrpc.TemperatureServiceFutureStub;
 import com.jeeconf.grpcdemo.dependencies.WindServiceGrpc.WindServiceFutureStub;
@@ -58,7 +59,7 @@ public class WeatherAsyncServer {
             i_threads = Integer.parseInt(threads);
         }
         // In principle, number of threads should be equal to number of CPUs but let try
-        i_threads = i_threads * 256;
+        i_threads = i_threads * 16;
         String value = System.getenv().getOrDefault("JVM_EXECUTOR_TYPE", "fixed");
         System.out.println("Number of threads " + i_threads + " and executor style=" + value);
 
